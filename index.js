@@ -72,6 +72,10 @@ exports.parse = (raw) => {
 
   // Get constraints for each var
   const addVar = (v, d) => {
+    if (v === 'log' || v === 'expt') {
+      return
+    }
+
     if (!systems.vars[v]) {
       systems.vars[v] = []
     }
