@@ -1,0 +1,17 @@
+{
+  "name": "orientable",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "orientable": "./bin.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "yargs": "^15.0.2"
+  }
+}
