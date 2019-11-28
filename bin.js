@@ -15,7 +15,7 @@ require('yargs')
       console.log('Missing descriptions for: ')
       const raw = fs.readFileSync(argv.path, 'utf-8')
       const model = orient.parse(raw)
-      const undescribed = Object.keys(model.descriptions).filter(k => model.descriptions[k].length === 0)
+      const undescribed = Object.keys(model.descriptions).filter(k => model.descriptions[k].length === 0).sort()
       console.log(undescribed.join('\n'))
       console.log(`\nMissing descriptions for ${undescribed.length} terms`)
     }
@@ -34,5 +34,5 @@ require('yargs')
       console.log(JSON.stringify(Object.keys(model.vars), 2, 2))
     }
   )
- .help()
+  .help()
   .argv
