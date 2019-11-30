@@ -8,7 +8,7 @@ require('yargs')
     'Lint .orient file',
     (yargs) => {
       yargs.positional('path', {
-        describe: 'Path to file to lint'
+        describe: 'Path to model to lint'
       })
     },
     (argv) => {
@@ -43,7 +43,7 @@ require('yargs')
     'List vars of .orient file',
     (yargs) => {
       yargs.positional('path', {
-        describe: 'Path to file to lint'
+        describe: 'Path to orient model'
       })
     },
     (argv) => {
@@ -52,5 +52,40 @@ require('yargs')
       console.log(JSON.stringify(Object.keys(model.vars), 2, 2))
     }
   )
+  .command(
+    'solve <path> <assignments>',
+    'Find assignments for .orient file and .json assingments',
+    (yargs) => {
+      yargs.positional('path', {
+        describe: 'Path to orient model'
+      })
+      yargs.positional('assignments', {
+        describe: 'Path to assignments json'
+      })
+    },
+    (argv) => {
+      const raw = fs.readFileSync(argv.path, 'utf-8')
+      const assignments = JSON.parse(fs.readFileSync(argv.assignments, 'utf-8'))
+      console.log(orient.solveMultiple(raw, assignments).map(d => d.assignments))
+    }
+  )
+  .command(
+    'unsolved <path> <assignments>',
+    'List unresolved equations',
+    (yargs) => {
+      yargs.positional('path', {
+        describe: 'Path to orient model'
+      })
+      yargs.positional('assignments', {
+        describe: 'Path to assignments json'
+      })
+    },
+    (argv) => {
+      const raw = fs.readFileSync(argv.path, 'utf-8')
+      const assignments = JSON.parse(fs.readFileSync(argv.assignments, 'utf-8'))
+      console.log(orient.solveMultiple(raw, assignments).map(d => d.constraints.join('\n')).join('\n'))
+    }
+  )
+  .strict()
   .help()
   .argv

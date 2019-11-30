@@ -11,11 +11,14 @@ $ npm i -g orientable
 ## Usage
 
 ```
-$ orientable --help
+orientable [command]
 
 Commands:
-  orientable lint <path>  Lint .orient file
-  orientable vars <path>  List vars of .orient file
+  orientable lint <path>                    Lint .orient file
+  orientable vars <path>                    List vars of .orient file
+  orientable solve <path> <assignments>     Find assignments for .orient file
+                                            and .json assingments
+  orientable unsolved <path> <assignments>  List unresolved equations
 
 Options:
   --version  Show version number                                       [boolean]
