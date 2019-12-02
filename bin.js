@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs')
 const orient = require('./index')
+const path = require('path')
 
 require('yargs')
   .command(
@@ -100,6 +101,35 @@ require('yargs')
             .replace(/\+/g, ' + ')
 
       console.log(res)
+    }
+  )
+  .command(
+    'serve <port> [path]',
+    'Serve the solver on a model',
+    (yargs) => {
+      yargs.positional('port', {
+        describe: 'Port of the http server'
+      })
+      yargs.positional('path', {
+        describe: 'Path to model folder'
+      })
+    },
+    (argv) => {
+      const express = require('express')
+      const app = express()
+      const port = argv.port
+      const model = fs.readFileSync(argv.path, 'utf-8')
+
+      app.use(express.json());
+      app.set('json spaces', 2);
+      app.post('/', (req, res) => {
+        res.send(orient.solve(model, req.body))
+      })
+
+      app.listen(port, () => {
+        console.log(`Simple Orientable server listening on port ${port}!`)
+        console.log(`Model at: ${argv.path}`)
+      })
     }
   )
   .strict()
