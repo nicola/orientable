@@ -22,7 +22,7 @@ exports.solveMultiple = (raw, assignmentSet) => {
   return res.map(assignments => solve(raw, assignments))
 }
 
-const parse = exports.parse = (raw, flags) => {
+const parse = exports.parse = (raw, flags={}) => {
   raw = raw.replace(/log2\(/g, '(1/log(2))*log(')
   raw = raw.replace(/expt\(2,/g, '2^(')
   const regex = new RegExp('^(( )*[A-Z]+)')

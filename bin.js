@@ -70,7 +70,7 @@ require('yargs')
     }
   )
   .command(
-    'unsolved <path> <assignments>',
+    'unsolved <path> <assignments> [branch]',
     'List unresolved equations',
     (yargs) => {
       yargs.positional('path', {
@@ -79,11 +79,27 @@ require('yargs')
       yargs.positional('assignments', {
         describe: 'Path to assignments json'
       })
+      yargs.positional('branch', {
+        describe: 'Index of solution branch'
+      })
     },
     (argv) => {
       const raw = fs.readFileSync(argv.path, 'utf-8')
       const assignments = JSON.parse(fs.readFileSync(argv.assignments, 'utf-8'))
-      console.log(orient.solveMultiple(raw, assignments).map(d => d.constraints.join('\n')).join('\n'))
+      const sols = orient.solveMultiple(raw, assignments)
+      if (argv.branch >= sols.length) {
+        console.log('Not enough solution branches')
+        return
+      }
+      const res = sols
+            .map(d => d.constraints.join('\n'))[argv.branch || 0]
+            .replace(/=/g, ' = ')
+            .replace(/\*/g, ' * ')
+            .replace(/\//g, ' / ')
+            .replace(/-/g, ' - ')
+            .replace(/\+/g, ' + ')
+
+      console.log(res)
     }
   )
   .strict()
